@@ -1,0 +1,15 @@
+
+version: "2"
+services:
+  dns-restarter:
+    restart: unless-stopped
+    build: .
+    environment:
+      - LOG_LEVEL=debug
+      - RESTART_INTERVAL=10
+      - METRICS_PORT=9199
+      - DNSDOCK_CONTAINER_NAME=mediastation_dnsdock_1
+    ports:
+      - 9199:9199
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
