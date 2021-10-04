@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     build: .
     environment:
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info
       - RESTART_INTERVAL=10
       - METRICS_PORT=9199
       - DNSDOCK_CONTAINER_NAME=mediastation_dnsdock_1
