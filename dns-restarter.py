@@ -44,8 +44,8 @@ logger.info(f"Restart interval (seconds): {restart_interval}")
 
 def get_dnsdock_alias(container):
   try:
-    return [env.split("=")[1] for env in container.attrs['Config']['Env'] if env.startswith("DNSDOCK_ALIAS")].pop()
-  except IndexError:
+    return next(env.split("=")[1] for env in container.attrs['Config']['Env'] if env.startswith("DNSDOCK_ALIAS"))
+  except (StopIteration, IndexError, KeyError):
     return None
 
 def get_network_ip(container):
@@ -53,12 +53,12 @@ def get_network_ip(container):
     networks = container.attrs['NetworkSettings']['Networks'].keys()
     for network in networks:
       return container.attrs['NetworkSettings']['Networks'][network]['IPAddress']
-  except IndexError:
+  except (StopIteration, KeyError):
     return None
 
 def main_loop():
   container_list = client.containers.list()
-  dnsdock_container = [ctr for ctr in container_list if ctr.name == dnsdock_container_name].pop()
+  dnsdock_container = next(ctr for ctr in container_list if ctr.name == dnsdock_container_name)
   requires_restart = False
   for container in container_list:
     alias = get_dnsdock_alias(container)
@@ -66,8 +66,8 @@ def main_loop():
       container_ip = get_network_ip(container)
       resolved_address = None
       try:
-        resolved_address = [ans.address for ans in res.query(alias)].pop()
-      except (dns_exception.DNSException, IndexError) as e:
+        resolved_address = next(ans.address for ans in res.query(alias))
+      except (dns_exception.DNSException, StopIteration) as e:
         logger.error(e.msg)
         logger.error(f"Couldn't resolve {alias} for {container.name} this will trigger a restart.")
         requires_restart = True
