@@ -16,7 +16,7 @@ loglevel = os.environ.get('LOG_LEVEL', "info")
 docker_socket = os.environ.get('DOCKER_HOST', 'unix://var/run/docker.sock')
 resolvers = os.environ.get('DNS_RESOLVERS', '10.1.1.1').split(",")
 dnsdock_container_name = os.environ.get('DNSDOCK_CONTAINER_NAME', "mediastation_dnsdock_1")
-restart_interval = int(os.environ.get('RESTART_INTERVAL', '10'))
+restart_interval = int(os.environ.get('RESTART_INTERVAL', '30'))
 metrics_port = int(os.environ.get('METRICS_PORT', '9199'))
 
 # create logger
@@ -58,7 +58,7 @@ def get_network_ip(container):
 
 def main_loop():
   container_list = client.containers.list()
-  dnsdock_container = [ctr for ctr in container_list if ctr.name == "mediastation_dnsdock_1"].pop()
+  dnsdock_container = [ctr for ctr in container_list if ctr.name == dnsdock_container_name].pop()
   requires_restart = False
   for container in container_list:
     alias = get_dnsdock_alias(container)
