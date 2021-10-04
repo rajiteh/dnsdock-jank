@@ -6,7 +6,7 @@ import docker
 import time
 import logging
 import os
-from dns import resolver
+from dns import resolver, exception as dns_exception
 from prometheus_client import start_http_server, Counter
 
 TIMES_RESTARTED = Counter('times_restarted', 'number of times dnsdock was restarted')
@@ -67,7 +67,8 @@ def main_loop():
       resolved_address = None
       try:
         resolved_address = [ans.address for ans in res.query(alias)].pop()
-      except (resolver.NoNameservers, IndexError):
+      except (dns_exception.DNSException, IndexError) as e:
+        logger.error(e.msg)
         logger.error(f"Couldn't resolve {alias} for {container.name} this will trigger a restart.")
         requires_restart = True
         break
