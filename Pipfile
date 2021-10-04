@@ -10,6 +10,7 @@ pyyaml = "*"
 docker = "*"
 dnspython = "*"
 prometheus-client = "*"
+python_dotenv = "*"
 
 [requires]
 python_version = "3.6"
