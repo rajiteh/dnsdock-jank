@@ -15,7 +15,7 @@ TIMES_RESTARTED = Counter('times_restarted', 'number of times dnsdock was restar
 loglevel = os.environ.get('LOG_LEVEL', "info")
 docker_socket = os.environ.get('DOCKER_HOST', 'unix://var/run/docker.sock')
 resolvers = os.environ.get('DNS_RESOLVERS', '10.1.1.95').split(",")
-dnsdock_container_name = os.environ.get('DNSDOCK_CONTAINER_NAME', "mediastation_dnsdock_1")
+dnsdock_container_name = os.environ.get('DNSDOCK_CONTAINER_NAME', "media-station_dnsdock_1")
 restart_interval = int(os.environ.get('RESTART_INTERVAL', '30'))
 metrics_port = int(os.environ.get('METRICS_PORT', '9199'))
 
