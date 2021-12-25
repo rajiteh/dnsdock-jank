@@ -8,7 +8,7 @@ services:
       - LOG_LEVEL=info
       - RESTART_INTERVAL=30
       - METRICS_PORT=9199
-      - DNSDOCK_CONTAINER_NAME=mediastation_dnsdock_1
+      - DNSDOCK_CONTAINER_NAME=media-station_dnsdock_1
     ports:
       - 9199:9199
     volumes:
